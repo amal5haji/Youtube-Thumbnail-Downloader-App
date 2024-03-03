@@ -42,23 +42,26 @@ const InputScreen = () => {
     if (textInputRef.current) {
       textInputRef.current.blur();
     }
+    try {
+      if (videoId.includes("youtube.com") || videoId.includes("youtu.be")) {
+        let extractedVideoId = videoId;
 
-    if (videoId.includes("youtube.com") || videoId.includes("youtu.be")) {
-      let extractedVideoId = videoId;
+        if (videoId.includes("youtube.com")) {
+          const queryParams = videoId.split("?v=")[1];
+          extractedVideoId = queryParams || extractedVideoId;
+        } else if (videoId.includes("youtu.be")) {
+          extractedVideoId = videoId.split("/").pop();
+        }
 
-      if (videoId.includes("youtube.com")) {
-        const queryParams = new URLSearchParams(videoId.split("?")[1]);
-        extractedVideoId = queryParams.get("v") || extractedVideoId;
-      } else if (videoId.includes("youtu.be")) {
-        extractedVideoId = videoId.split("/").pop();
+        const finalVideoId = extractedVideoId.split("&")[0];
+
+        const imageUrl = getThumbnailUrl(finalVideoId);
+        setThumbnailUrl(imageUrl);
+      } else {
+        showAlert("Please enter a valid YouTube video URL");
       }
-
-      const finalVideoId = extractedVideoId.split("&")[0];
-
-      const imageUrl = getThumbnailUrl(finalVideoId);
-      setThumbnailUrl(imageUrl);
-    } else {
-      showAlert("Please enter a valid YouTube video URL");
+    } catch (error) {
+      showAlert("Error", "Thumbnail loading failed");
     }
 
     setIsLoading(false);
@@ -162,7 +165,7 @@ const InputScreen = () => {
             style={{
               backgroundColor: "#1E1F20",
               color: "#AFAFB0",
-              ...tw`p-4 w-full border border-gray-600 pl-6 rounded-full mb-4 shadow-sm`,
+              ...tw`p-4 w-full border border-gray-600 pl-6 pr-12 rounded-full mb-4 shadow-sm`,
             }}
             placeholderTextColor="#AFAFB0"
             selectionColor="#AFAFB0"

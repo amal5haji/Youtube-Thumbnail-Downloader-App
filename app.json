@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ShareThumb",
-    "slug": "ShareThumb",
+    "name": "Youtube Thumbnail Downloader",
+    "slug": "youtube-thumbnail-downloader",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -23,10 +23,16 @@
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#131314"
       },
-      "permissions": ["WRITE_EXTERNAL_STORAGE"]
+      "permissions": ["WRITE_EXTERNAL_STORAGE"],
+      "package": "youtube-thumbnail-downloader.app"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ea51a0b5-b0e7-491e-931a-1ec183b5b438"
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "ShareThumb",
+  "name": "Youtube Thumbnail Downloader",
   "version": "1.0.0",
   "main": "src/App.js",
   "scripts": {

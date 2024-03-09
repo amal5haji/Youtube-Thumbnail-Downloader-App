@@ -6,8 +6,9 @@
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "dark",
+    "scheme": "yt-thumbnail-downloader",
     "splash": {
-      "image": "./src/assets/splash.jpg",
+      "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#131314"
     },
@@ -24,10 +25,38 @@
         "backgroundColor": "#131314"
       },
       "permissions": ["WRITE_EXTERNAL_STORAGE"],
-      "package": "youtube-thumbnail-downloader.app"
+      "package": "com.youtubethumbnaildownloader"
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "899be451-5421-4d76-a9d0-4fb0173fa745",
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "ShareExtension",
+                  "bundleIdentifier": "undefined.share-extension",
+                  "entitlements": {
+                    "com.apple.security.application-groups": ["group.undefined"]
+                  }
+                },
+                {
+                  "targetName": "ShareExtension",
+                  "bundleIdentifier": "undefined.share-extension"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "plugins": ["expo-share-intent"]
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-9424770168803651~7958279782"
   }
 }

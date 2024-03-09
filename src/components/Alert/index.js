@@ -6,9 +6,9 @@ const Alert = ({ title, message, visible, onDismiss }) => {
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={tw`flex-1  p-8 items-center justify-center bg-gray-900/50`}>
-        <View style={tw`bg-white p-6 rounded-lg shadow-lg`}>
-          <Text style={tw`text-xl font-bold mb-3`}>{title}</Text>
-          <Text style={tw`text-gray-700`}>{message}</Text>
+        <View style={tw`bg-[#131314] p-6 rounded-lg shadow-lg`}>
+          <Text style={tw`text-xl font-bold mb-3 text-[#444746]`}>{title}</Text>
+          <Text style={tw`text-[#444746]`}>{message}</Text>
           <TouchableOpacity
             onPress={onDismiss}
             style={tw` mt-4 px-5 py-3 rounded-full`}

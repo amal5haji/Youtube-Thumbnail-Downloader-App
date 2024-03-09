@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   SafeAreaView,
   TextInput,
@@ -11,9 +11,23 @@ import {
 } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
+import { useShareIntent } from "expo-share-intent";
+import {
+  InterstitialAd,
+  AdEventType,
+  BannerAd,
+  BannerAdSize,
+} from "react-native-google-mobile-ads";
 
 import tw from "twrnc";
 import Alert from "../components/Alert";
+
+const adUnitId = "ca-app-pub-9424770168803651/9132487000";
+
+const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ["fashion", "clothing"],
+});
 
 const InputScreen = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,8 +37,13 @@ const InputScreen = () => {
   const [showAlertVisible, setShowAlertVisible] = useState(false);
   const [alertTitle, setAlertTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
+  const [showImage, setShowImage] = useState(true);
+
+  // for Interstitial  ad
+  const [loaded, setLoaded] = useState(false);
 
   const textInputRef = useRef(null);
+  const { hasShareIntent, shareIntent } = useShareIntent();
 
   const showAlert = (title, message) => {
     setAlertTitle(title);
@@ -36,21 +55,23 @@ const InputScreen = () => {
     return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
   };
 
-  const handleGetThumbnail = async () => {
+  const handleGetThumbnail = async (videoUrl) => {
     setIsLoading(true);
+
+    if (loaded) interstitial.show();
 
     if (textInputRef.current) {
       textInputRef.current.blur();
     }
     try {
-      if (videoId.includes("youtube.com") || videoId.includes("youtu.be")) {
-        let extractedVideoId = videoId;
+      if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
+        let extractedVideoId = videoUrl;
 
-        if (videoId.includes("youtube.com")) {
-          const queryParams = videoId.split("?v=")[1];
+        if (videoUrl.includes("youtube.com")) {
+          const queryParams = videoUrl.split("?v=")[1];
           extractedVideoId = queryParams || extractedVideoId;
-        } else if (videoId.includes("youtu.be")) {
-          extractedVideoId = videoId.split("/").pop();
+        } else if (videoUrl.includes("youtu.be")) {
+          extractedVideoId = videoUrl.split("/").pop();
         }
 
         const finalVideoId = extractedVideoId.split("&")[0];
@@ -105,6 +126,28 @@ const InputScreen = () => {
     });
   };
 
+  useEffect(() => {
+    if (hasShareIntent) {
+      setVideoId(shareIntent?.text);
+      handleGetThumbnail(shareIntent?.text);
+    }
+  }, [hasShareIntent]);
+
+  useEffect(() => {
+    const unsubscribe = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        setLoaded(true);
+      }
+    );
+
+    // Start loading the interstitial straight away
+    interstitial.load();
+
+    // Unsubscribe from events on unmount
+    return unsubscribe;
+  }, []);
+
   return (
     <SafeAreaView style={tw`p-4 flex flex-col bg-[#131314] w-full h-full`}>
       <View style={tw`p-4 flex flex-row items-center justify-end mb-4`}>
@@ -148,11 +191,24 @@ const InputScreen = () => {
           </View>
         ) : (
           <View style={tw`flex items-center justify-center shadow-md`}>
-            <Image
-              source={require("../assets/svg/image.png")}
-              style={tw`w-full h-3/4 tint-[#444746]`}
-              resizeMode="contain"
+            {showImage && (
+              <Image
+                source={require("../assets/svg/image.png")}
+                style={tw`w-full h-3/4 tint-[#444746]`}
+                resizeMode="contain"
+              />
+            )}
+            <BannerAd
+              size={BannerAdSize.BANNER}
+              unitId="ca-app-pub-9424770168803651/6279200757"
+              onAdLoaded={() => {
+                setShowImage(false);
+              }}
+              onAdFailedToLoad={(error) => {
+                setShowImage(true);
+              }}
             />
+
             <Text style={tw`text-[#444746] text-center`}>
               Share the thumbnail, support the creator!
             </Text>
@@ -192,7 +248,7 @@ const InputScreen = () => {
         </View>
         <TouchableOpacity
           style={tw`bg-[#FF0000] w-full p-3 rounded-full shadow-md`}
-          onPress={handleGetThumbnail}
+          onPress={() => handleGetThumbnail(videoId)}
         >
           {isLoading ? (
             <ActivityIndicator size="small" color="white" />
@@ -214,6 +270,10 @@ const InputScreen = () => {
         message={alertMessage}
         visible={showAlertVisible}
         onDismiss={() => setShowAlertVisible(false)}
+      />
+      <BannerAd
+        size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
+        unitId="ca-app-pub-9424770168803651/6506323662"
       />
     </SafeAreaView>
   );

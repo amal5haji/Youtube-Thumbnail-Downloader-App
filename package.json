@@ -1,6 +1,6 @@
 {
   "name": "YoutubeThumbnailDownloader",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "main": "src/App.js",
   "scripts": {
     "start": "expo start --dev-client",

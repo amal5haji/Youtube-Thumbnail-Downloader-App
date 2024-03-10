@@ -270,10 +270,6 @@ const InputScreen = () => {
         visible={showAlertVisible}
         onDismiss={() => setShowAlertVisible(false)}
       />
-      <BannerAd
-        size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
-        unitId="ca-app-pub-9424770168803651/6506323662"
-      />
     </SafeAreaView>
   );
 };

@@ -58,8 +58,6 @@ const InputScreen = () => {
   const handleGetThumbnail = async (videoUrl) => {
     setIsLoading(true);
 
-    if (loaded) interstitial.show();
-
     if (textInputRef.current) {
       textInputRef.current.blur();
     }
@@ -91,6 +89,7 @@ const InputScreen = () => {
   const downloadImage = async () => {
     if (!thumbnailUrl) return;
     setIsSaving(true);
+    if (loaded) interstitial.show();
 
     try {
       const response = await fetch(thumbnailUrl);

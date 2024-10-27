@@ -2,7 +2,7 @@
 
 A simple, fast, and efficient mobile app to download YouTube video thumbnails in maximum resolution. Built with React Native and Expo.
 
-##📸 Screenshots
+📸 Screenshots
 
 ![image1](https://github.com/user-attachments/assets/c7bfb118-f124-4d7e-988d-108ca71b9909)
 ![image2](https://github.com/user-attachments/assets/1ae5be3e-7e89-49e9-9cd2-c4d6dca4d5bd)

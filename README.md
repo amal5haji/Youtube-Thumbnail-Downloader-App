@@ -25,7 +25,7 @@ If you want to build the app from source:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/youtube-thumbnail-downloader.git
+git clone https://github.com/amal5haji/youtube-thumbnail-downloader.git
 cd youtube-thumbnail-downloader
 ```
 
@@ -83,6 +83,6 @@ If you like this project, please give it a ⭐️ on GitHub!
 
 ## 🔗 Connect
 
-- Report bugs by creating an [issue](your-repo-link/issues)
+- Report bugs by creating an issue
 - Follow the project for updates
-- Contact: your@email.com (optional)
+- Contact: amalshajikm@gmail.com (optional)
